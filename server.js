@@ -1,26 +1,15 @@
 const express = require("express");
 const { Pool } = require("pg");
-const yaml = require("js-yaml");
-const fs = require("fs");
 
 const app = express();
 
-// Load configmap.yaml
-let config;
-try {
-  config = yaml.load(fs.readFileSync("config.yaml", "utf8"));
-} catch (err) {
-  console.error("Error loading config.yaml:", err);
-  process.exit(1);
-}
-
-// PostgreSQL connection
+// PostgreSQL connection using environment variables
 const pool = new Pool({
-  user: config.database.user,          // Use 'config' here instead of 'configmap'
-  host: config.database.host,
-  database: config.database.name,
-  password: config.database.password,
-  port: config.database.port,
+  user: process.env.DB_USER,          // Get value from environment variable
+  host: process.env.DB_HOST,          // Get value from environment variable
+  database: process.env.DB_NAME,      // You can define this in the ConfigMap if needed
+  password: process.env.DB_PASSWORD,  // Get value from environment variable
+  port: process.env.DB_PORT,          // Get value from environment variable
 });
 
 app.use(express.json());
@@ -39,8 +28,8 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-// Set server port from config, fallback to 3000 if not defined
-const port = config.server.port || 3000;
+// Set server port from environment variable or fallback to 3000
+const port = process.env.PORT || 3000;  // Use environment variable for port (optional)
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on http://localhost:${port}`);
 });

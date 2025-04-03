@@ -14,10 +14,7 @@ spec:
     spec:
       containers:
        - name: backend
-         image: backend_new
-         imagePullPolicy: Never
+         image: 440422120931.dkr.ecr.ap-south-1.amazonaws.com/ecommerce_backend:latest
          ports:
           - containerPort: 3000
-         envFrom:
-            - configMapRef:
-                name: postgres-config
+        

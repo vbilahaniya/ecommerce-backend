@@ -17,4 +17,6 @@ spec:
          image: 440422120931.dkr.ecr.ap-south-1.amazonaws.com/ecommerce_backend:latest
          ports:
           - containerPort: 3000
-        
+         envFrom:
+            - configMapRef:
+                name: postgres-config        
